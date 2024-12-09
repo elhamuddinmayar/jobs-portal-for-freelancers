@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Create an account{% endblock %}
+{% block content %}
+ <div class="container mb-5" style="margin-top:40px">
+    <div class="row">
+        <div class="col-10   mx-auto text-center  " style="margin-top: 10px">
+            <h1>Account Info</h1>
+            {% for error in user_form.errors %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <p class="text-danger">Please fix the issue with your <strong>{{error}}</strong></p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-floating my-3  ">
+                    <input name="username" type="text" class="form-control log-name border-success" id="floatingInput" placeholder="username">
+                    <label for="floatingInput">Username </label>
+                </div>
+                <div class="form-floating my-3  ">
+                    <input name="first_name" type="text" class="form-control log-name border-success" id="floatingInput" >
+                    <label for="floatingInput">First Name </label>
+                </div>
+                <div class="form-floating my-3  ">
+                    <input name="last_name" type="text" class="form-control log-name border-success" id="floatingInput" >
+                    <label for="floatingInput">Last Name </label>
+                </div>
+                <div class="form-floating my-3  ">
+                    <input name="email" type="Email" class="form-control log-name border-success" id="floatingInput" >
+                    <label for="floatingInput">Email</label>
+                </div>
+                <div class="form-floating ">
+                    <input name="password" type="password" class="form-control log-pass border-success  " id="floatingPassword" placeholder="Password">
+                    <label for="floatingPassword">Password</label>
+                </div>
+                <div class="form-floating ">
+                    <input name="password2" type="password" class="form-control log-pass border-success mt-3 " id="floatingPassword" placeholder="Password">
+                    <label for="floatingPassword">Repeat-Password</label>
+                </div>
+                <input class="btn btn-success login-new mt-4" type="submit" value="Create my account">
+                <a class="text-decoration-none btn btn-danger mt-4" href="{% url "home" %}">Back to Home</a>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        {% for message in messages %}
+            alert("{{ message|escapejs }}");
+        {% endfor %}
+    });
+</script>
+{% endblock %}

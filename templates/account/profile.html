@@ -1,0 +1,421 @@
+{% extends "base.html" %}
+{% load static%}
+{% block title %}Profile{% endblock %}
+{% block content %}
+
+<style>
+  .gold-star {
+      color: gold; /* Gold color for filled stars */
+  }
+  .gray-star {
+      color: gray; /* Gold color for filled stars */
+  }
+  .far.fa-star {
+      color: #ccc; /* Color for empty stars */
+      
+  }
+  .rating-container {
+      display: flex;
+      align-items: center;
+      font-size: 24px; /* Adjust the size as needed */
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Zubairy Jobs Portal</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0  ">
+          <li class="nav-item">
+            <a class="nav-link " aria-current="page" href="{% url "home" %}" {% if section == "home" %}class="selected"{% endif %}><i class="fas fa-home"></i> Home<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{% url "jobs" %}"><i class="fas fa-dollar-sign"></i> Jobs<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url "all_user" %}"><i class="fas fa-user-plus"></i> Users<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fas fa-business-time"></i> Companies<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fas fa-address-card"></i> About<br></a>
+          </li>
+          <li>
+          {% if request.user.company.user%}
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url "show_company" request.user.id %}"><i class="fas fa-address-card"></i> My Company<br></a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url "register_company" %} "><i class="fas fa-address-card"></i> Register Company<br></a>
+          </li>
+          {% endif  %}
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url "show_profile" request.user.id %}"><i class="fas fa-user-edit"></i> Profile<br></a>
+          </li>
+          <li class="nav-item dropdown ">
+                <a class="nav-link dropdown-toggle active"  href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Settings</a>
+                <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{% url "edit"%}"><i class="fas fa-user-check"></i> Update profile<br></a></li>
+                </li>
+                <li><a class="dropdown-item" href="{% url "password_change" %}"> <i class="fas fa-plug"></i>  Change password<br></a></li>
+                <li><a class="dropdown-item" href="{% url "manage_user_rates" %}"> <i class="fas fa-plug"></i>  Manage Users Rates<br></a></li>
+                <li><a class="dropdown-item" href="{% url "manage_company_rates" %}"> <i class="fas fa-plug"></i>  Manage Companies Rates<br></a></li>
+                <li><a class="dropdown-item" href="{% url "logout" %}"><i class="fas fa-power-off"></i> Logg out<br></a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#"><i class="fas fa-sticky-note"></i> Something else<br> </a></li>
+                </ul>
+             </li>
+        </ul>
+        
+        <div class="text-white">
+            {% if request.user.is_authenticated %}
+                  Welcome  {{ request.user.first_name|default:request.user.username }} !
+                   {% comment %} <a class="text-decoration-none" href="{% url "logout" %}"> Logout</a> {% endcomment %}
+            
+            {% endif %}
+          </div>
+      </div>
+    </div>
+  </nav>
+
+
+
+        <div class="div1">
+       
+        <div class="col-md-12  ">
+          <div class="list-group">
+              <div class="list-group-item">
+                  <div class="row">
+                     
+                  </div>
+              </div>
+              <div class="list-group-item">
+                  <div class="row">
+                      <div class="col-auto">
+                        {% if profile.profile_photo %}
+                        <img src="{{ profile.profile_photo.url }}" alt="Profile Photo" width="150" height="150" style="width:160px; height:160px; object-fit:cover; border:2px solid green; border-radius:50%;  ">
+                      {% else %}
+                        <img src="{% static 'images/4.jpg' %}" alt="Default Avatar" width="150" height="150" style="width:160px; height:160px; object-fit:cover; border:2px solid green; border-radius:50%;  ">
+                      {% endif %}                      
+                    </div>
+                      <div class="col px-4">
+                          <div>
+                                <h3>{{profile.user.first_name}} {{profile.user.last_name}}</h3>
+                                
+                                <div class="card w-75">
+                                  <div class="card-body">
+                                    <h5 class="card-title">{{rate.giver}} 
+                                      {% if a_rates == 1%}
+                                      <i class="fas fa-star gold-star"></i>
+                                      <i class="fas fa-star gray-star"></i>
+                                      <i class="fas fa-star gray-star"></i>
+                                      <i class="fas fa-star gray-star"></i>
+                                      <i class="fas fa-star gray-star"></i>
+                                      {% elif  a_rates == 2%}
+                                      <i class="fas fa-star gold-star"></i>
+                                      <i class="fas fa-star gold-star"></i>
+                                      <i class="fas fa-star gray-star"></i>
+                                      <i class="fas fa-star gray-star"></i>
+                                      <i class="fas fa-star gray-star"></i>
+                  
+                                      {% elif a_rates == 3 %}
+                                      <i class="fas fa-star gold-star"></i>
+                                      <i class="fas fa-star gold-star"></i>
+                                      <i class="fas fa-star gray-star"></i>
+                                      <i class="fas fa-star gray-star"></i>
+                                      <i class="fas fa-star gray-star"></i>
+                  
+                                      {% elif a_rates == 4 %}
+                                      <i class="fas fa-star gold-star"></i>
+                                      <i class="fas fa-star gold-star"></i>
+                                      <i class="fas fa-star gold-star"></i>
+                                      <i class="fas fa-star gold-star"></i>
+                                      <i class="fas fa-star gray-star"></i>
+                  
+                                      {% elif a_rates == 5%}
+                                      <i class="fas fa-star gold-star"></i>
+                                      <i class="fas fa-star gold-star"></i>
+                                      <i class="fas fa-star gold-star"></i>
+                                      <i class="fas fa-star gold-star"></i>
+                                      <i class="fas fa-star gold-star"></i>
+                                      {% endif %}
+                  
+                                    </h5>
+                                 
+                                    
+                                  </div>
+                              </div>
+                           
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              
+          </div>
+      </div>
+        <!-- Profile Details -->
+          
+
+        <div class="container-fluid mt-3">
+          <div id="about" class="row about-section">
+              
+              
+              <div class="col-lg-4 about-card">
+                <h3 class="font-weight-light"><i class="fas fa-user"></i> Personal Info</h3><hr>
+
+                <span class="line mb-5"></span>
+                <ul class="mt40 info list-unstyled">
+                    <li><span>Bio</span> : {{ profile.bio }}</li><hr>
+                    <li><span>Email</span> : {{ profile.user.email }}</li><hr>
+                    <li><span>Phone</span> : {{ profile.phone_number }}</li><hr>
+                    <li><a class="text-decoration-none" href="{{profile.social_media_link}}">{{profile.user.first_name}} {{profile.user.last_name}}</a>  </li><hr>
+                    <li><span>Address</span> :  {{ profile.address }}</li><hr>
+                </ul>
+                
+            </div>
+              <div class="col-lg-4 about-card">
+                <div class="card-body">
+                  <strong><i class="fas fa-book mr-1"></i> Education</strong>
+  
+                  <p class="text-muted">
+                    {{profile.education_background}}
+                  </p>
+  
+                  <hr>
+  
+                  <strong><i class="fas fa-flag mr-1"></i>  Interests</strong>
+                  {% if profile.interests%}
+                  <p class="text-muted">{{profile.interests}}</p>
+                  {% else%}
+                  <p class="text-muted">.....................</p>
+                  {% endif%}
+                  <hr>
+  
+                  <strong><i class="fas fa-vihara"></i> Languages</strong>
+  
+                  
+                  <p class="text-muted">
+                    <span class="tag tag-danger">{{profile.languages}}</span>
+                  </p>
+  
+                  <hr>
+  
+                  <strong><i class="fas fa-tasks"></i> Work Experience</strong>
+  
+                  <p class="text-muted">{{profile.work_experience}}</p>               </div> 
+              </div>
+              <div class="col-lg-4 about-card">
+                <div class="card-body">
+                  <strong><i class="fas fa-book mr-1"></i> Personal Skills</strong>
+
+                  <p class="text-muted">{{profile.personal_skills}}</p>
+                </div>
+      </div>
+        
+        {% if  profile.user.first_name|lower == request.user.first_name|lower %} 
+            <p class="fs-4">Recently users reviews</p>
+            {% for rate in my_rates %}
+              <div class="card w-75">
+                <div class="card-body">
+                  <h5 class="card-title">{{rate.giver}}Stars 
+                    {% if rate.rating_value == 1%}
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    {% elif  rate.rating_value == 2%}
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+
+                    {% elif rate.rating_value == 3 %}                    
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+
+                    {% elif rate.rating_value == 4 %}
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+
+                    {% elif rate.rating_value == 5%}
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    {% endif %}
+
+                  </h5>
+                  <p class="card-text">{{rate.comment}}</p>
+                  
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+        <div class="btn-group">
+          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Rate {{profile.user.first_name}}
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url "rate_user" profile.id %}">Rate from Profile</a></li>
+            {% if company %}
+            <li><a class="dropdown-item" href="{% url "rate_company" profile.id %}">Rate from Company</a></li>
+            {% else %}
+            <li><a class="dropdown-item" href="{% url "register_company" %}">Register the Company</a></li>
+            {% endif %}
+          </ul>
+        </div>
+        <h1>{{profile.user.first_name}} rates</h1>
+        {% for rate in my_rates %}
+        <div class="card w-75">
+          <div class="card-body">
+            <h5 class="card-title">{{rate.giver}}Stars 
+              {% if rate.rating_value == 1%}
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    {% elif  rate.rating_value == 2%}
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    {% elif rate.rating_value == 3 %}
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    {% elif rate.rating_value == 4 %}
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    {% elif rate.rating_value == 5%}
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    {% endif %}
+            </h5>
+            <p class="card-text">{{rate.comment}}</p>
+            
+          </div>
+        </div>
+        {%endfor%}
+        {% endif %}
+
+        {% comment %} .........company........... {% endcomment %}
+
+        {% if  profile.user.first_name|lower == request.user.first_name|lower %}
+            <p class="fs-4">My rates From Companies</p>
+            {% for rc in my_rates_company %}
+              <div class="card w-75">
+                <div class="card-body">
+                  <h5 class="card-title">{{rc.giver}}Stars 
+                    {% if rc.rating_value == 1%}
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    {% elif  rc.rating_value == 2%}
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    {% elif rc.rating_value == 3 %}
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    {% elif rc.rating_value == 4 %}
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    {% elif rc.rating_value == 5%}
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    {% endif %}
+
+                  </h5>
+                  <p class="card-text">{{rc.comment}}</p>
+                   
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+        
+        <p class="fs-4">{{profile.user.first_name}} rates From Companies</p> 
+        {% for rc in my_rates_company %}
+        <div class="card w-75">
+          <div class="card-body">
+            <h5 class="card-title">{{rc.giver}}Stars 
+              {% if rc.rating_value == 1%}
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    {% elif  rc.rating_value == 2%}
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    {% elif rc.rating_value == 3 %}
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    {% elif rc.rating_value == 4 %}
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    <i class="fas fa-star gray-star"></i>
+                    {% elif rc.rating_value == 5%}
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    <i class="fas fa-star gold-star"></i>
+                    {% endif %}
+            </h5>
+            <p class="card-text">{{rc.comment}}</p>
+             
+        </div>
+        {%endfor%}
+        {% endif %}
+
+       
+{% if messages %}    
+{% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Log-in{% endblock %}
+
+{% block content %}
+
+ <h1 class="text-center zubairy" style="margin-bottom:20px" >Zubairy Jobs Portal</h1>
+ <div class="overflow-hidde first">
+       <div class="container border border-success   mt-5 login-container">
+        <div class="row ">
+          <div class="col-9   mx-auto text-center  " style="margin-top: 10px">
+           
+           <p class="fs-2 fw-bold text-center">Login</p>
+              <form action="{% url 'login' %}" method="post">
+                  {% csrf_token %}
+                  <div class="form-floating my-3  ">
+                      <input name="username" type="text" class="form-control log-name border-success" id="username" placeholder="username">
+                  </div>
+
+                  <div class="form-floating ">
+                      <input name="password" type="password" class="form-control log-pass border-success  " id="floatingPassword" placeholder="Password">
+                  </div> 
+                  <input type="submit" value="Login" class="btn btn-success  col-12 mt-4  login-new ">
+
+                  <p class="my-6 text-center mt-4">Unfortunatly,
+                    <a class="my-color text-decoration-none" href="{% url "password_reset" %}">I forgot my password</a>
+                  </p>
+                      <p> <a class="my-color text-decoration-none btn btn-info" href="{% url "register" %}">Register for free</a></p>
+              </form>
+         
+        </div>
+       
+     </div>
+   </div>
+ </div>
+
+{% endblock %}

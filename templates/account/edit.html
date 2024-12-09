@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% block title %}Edit your Company{% endblock %}
+{% block content %}
+
+{% comment %}  
+  <h1>Edit {{user.username}} Profile</h1>
+ <p>You can edit your company using the following form:</p>
+ <form method="post" enctype="multipart/form-data">
+
+ {{ user_form.as_p }}
+ {{ profile_form.as_p }}
+ {% csrf_token %}
+ <p><input type="submit" value="Save changes"></p>
+ </form>   {% endcomment %}
+
+<div class="container mb-5" style="margin-top:40px">
+    <div class="row">
+        <div class="col-10   mx-auto text-center  " style="margin-top: 10px">
+            <h1>Update Info</h1>
+            <p>You can edit your profile using the following form:</p>
+            {% for error in user_form.errors %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <p class="text-danger">Please fix the issue with your <strong>{{error}}</strong></p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+            <form method="post" enctype="multipart/form-data">
+              
+                <div class="form-floating my-3 ">
+
+                  {% if request.user.first_name %}
+                  <input type="text" name="first_name" value={{request.user.first_name}} maxlength="150" id="id_first_name" class="form-control log-name border-success" placeholder="First Name">
+                  {% else %}
+                  <input type="text" name="first_name"  maxlength="150" id="id_first_name" class="form-control log-name border-success" placeholder="First Name">
+
+                  {%endif%}
+
+                </div>
+                  
+                <div class="form-floating my-3">
+
+                  <input type="text" name="last_name" value={{request.user.last_name|safe}} maxlength="150" id="id_last_name" class="form-control log-name border-success" placeholder="Last Name">
+                
+
+                </div>
+                  
+                <div class="form-floating my-3">
+
+                  <input type="email" name="email" value={{request.user.email|safe}} maxlength="254" id="id_email" class="form-control log-name border-success" placeholder="Email  Addresss">
+              
+                </div>
+                  
+                   <div class="form-floating my-3 ">
+                       <label for="id_profile_photo">Profile Picture</label>
+                      <input type="file" name="profile_photo"  accept="image/*" id="id_profile_photo" class="form-control log-name border-success" placeholder="Profile Picture">
+                      
+
+                  </div>
+            <div class="form-floating my-3 ">
+                   
+                {% if request.user.profile.bio%}
+                <input type="text" name="bio" value={{request.user.profile.bio|safe}} maxlength="255" id="id_bio" class="form-control log-name border-success" placeholder="Bio">
+                {% else%}
+                <input type="text" name="bio"  maxlength="255" id="id_bio" class="form-control log-name border-success" placeholder="Bio">
+                {% endif%}
+              </div>
+            
+            <div class="form-floating my-3 ">
+
+              {% if request.user.profile.phone_number %}
+              <input type="text" name="phone_number" value={{request.user.profile.phone_number|safe}} maxlength="15" id="id_phone_number" class="form-control log-name border-success" placeholder="Phone Number">
+
+              {%else%}
+              <input type="text" name="phone_number"  maxlength="15" id="id_phone_number" class="form-control log-name border-success" placeholder="Phone Number">
+              {%endif%}
+            </div>
+                  
+            <div class="form-floating my-3">
+
+              {% if request.user.profile.address %}
+              <input type="text" name="address" value={{request.user.profile.address|safe}} maxlength="255" id="id_address" class="form-control log-name border-success" placeholder="Address">
+              {%else%}
+
+              <input type="text" name="address"  maxlength="255" id="id_address" class="form-control log-name border-success" placeholder="Address">
+           {% endif%}
+             </div>
+                 
+            <div class="form-floating my-3">
+              
+              {%if request.user.profile.social_media_link%}
+              <input type="url" name="social_media_link" value={{request.user.profile.social_media_link|safe}} maxlength="200" id="id_social_media_link" class="form-control log-name border-success" placeholder="Social media link">
+              {% else%}
+              <input type="url" name="social_media_link" maxlength="200" id="id_social_media_link" class="form-control log-name border-success" placeholder="Social media link">
+              {% endif%}
+             </div>
+                                
+              <div class="form-floating my-3">
+
+                {% if request.user.profile.interests%}
+                <input type="text" name="interests" value={{request.user.profile.interests|safe}} maxlength="255" id="id_interests" class="form-control log-name border-success" placeholder="Interests">
+                {% else%}
+                <input type="text" name="interests"  maxlength="255" id="id_interests" class="form-control log-name border-success" placeholder="Interests">
+                 {%endif%}
+            </div>
+  
+            <div class="form-floating my-3">
+
+                {% if request.user.profile.languages %}
+              <input type="text" name="languages" value={{request.user.profile.languages |safe }} maxlength="255" id="id_languages" class="form-control log-name border-success" placeholder="Languages">
+             {%else%}
+              <input type="text" name="languages"  maxlength="255" id="id_languages" class="form-control log-name border-success" placeholder="Languages">
+            {%endif%}
+            </div>
+            
+            <div class="form-floating my-3">
+
+              {%if request.user.profile.work_experience%}
+              <input type="text" name="work_experience" value={{request.user.profile.work_experience|safe}} maxlength="255" id="id_work_experience" class="form-control log-name border-success" placeholder="Work experience">
+              {%else%}
+            <input type="text" name="work_experience"  maxlength="255" id="id_work_experience" class="form-control log-name border-success" placeholder="Work experience">
+            {%endif%}
+          </div>
+                  
+          <div class="form-floating my-3">
+            
+            {% if request.user.profile.education_background%}   
+            <input type="text" name="education_background" value={{request.user.profile.education_background|safe}}  maxlength="255" id="id_education_background" class="form-control log-name border-success" placeholder="Education background">
+           {%else%}
+            <input type="text" name="education_background"   maxlength="255" id="id_education_background" class="form-control log-name border-success" placeholder="Education background">
+         {% endif%}
+          </div>
+                          
+          <div class="form-floating my-3">
+            {% if request.user.profile.personal_skills%}
+            
+            <input type="text" name="personal_skills" value={{request.user.profile.personal_skills|safe}} maxlength="255" id="id_personal_skills" class="form-control log-name border-success" placeholder="Personal skills">
+            {% else%}
+            <input type="text" name="personal_skills"  maxlength="255" id="id_personal_skills" class="form-control log-name border-success" placeholder="Personal skills">
+            {%endif%}
+          </div>
+                 {% csrf_token %}
+                <input class="btn btn-success login-new mt-4" type="submit" value="Save Changes">
+                <a class="text-decoration-none btn btn-danger mt-4" href="{% url "show_profile" request.user.id %}">Back to Home</a>
+            </form>
+        </div>
+    </div>
+</div> 
+
+{% endblock %}

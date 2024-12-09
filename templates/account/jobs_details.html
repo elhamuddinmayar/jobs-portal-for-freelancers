@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Announce Job{% endblock %}
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Zubairy Jobs Portal</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0  ">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{% url "home" %}" {% if section == "home" %}class="selected"{% endif %}><i class="fas fa-home"></i> Home<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link  active" href="{% url "jobs" %}"><i class="fas fa-dollar-sign"></i> Jobs<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url "all_user" %}"><i class="fas fa-user-plus"></i> Users<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fas fa-business-time"></i> Companies<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fas fa-address-card"></i> About<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url "show_profile" request.user.id %}"> <i class="fas fa-user-edit"></i> Profile<br></a>
+          </li>
+        </ul>
+        
+      
+        <div class="text-white">
+          {% if request.user.is_authenticated %}
+          
+                Welcome  {{ request.user.first_name|default:request.user.username }} 
+                 {% comment %} <a class="text-decoration-none" href="{% url "logout" %}"> Logout</a> {% endcomment %}
+        {% else %}
+                {% comment %} <a href="{% url "login" %}"> Log-in</a> {% endcomment %}
+        {% endif %}
+        </div>
+      </div>
+    </div>
+  </nav>
+
+
+    
+    <div >
+        <div>
+            <div >
+            <h5 >{{job.title}} at......... {{job.company}}</h5>
+            <p >ID:{{job.id}}<br>
+                Amount: {{job.company}}<br>
+                Salary: {{job.salary}} AF<br>
+                Gender: {{job.gender}}<br>
+                Dead Line: {{job.end_of_convenant}}<br>
+            </p>
+            {% comment %} <a href="{% url "job_detail" job.id %}" class="card-link">Read More</a> {% endcomment %}
+            {% comment %} <a href="{% url "show_company" %}" >Visit Company</a> {% endcomment %}
+            
+              <a class="nav-link dropdown-  toggle active "  href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >Apply</a>
+              <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="#"><i class="fas fa-user-check"></i> from profile<br></a></li>
+              <li><a class="dropdown-item" href="#"><i class="fas fa-user-check"></i> else<br></a></li>
+              
+              </ul>
+              
+         
+            </div>
+        </div> 
+    </div>  
+
+
+
+
+
+
+{% endblock %}

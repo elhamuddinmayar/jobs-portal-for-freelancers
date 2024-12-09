@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}People{% endblock %}
+{% block content %}
+
+<ul class="menu">
+    <li >
+        <a href="{% url "home"%}">Home</a>
+    </li>
+    <li >
+        <a href="#">search</a>
+    </li>
+</ul>
+
+        <div class="div1">
+            
+            {% for peo in people%}
+            <img src="{{peo.profile_photo.url}}" height="100px">
+            <h1>{{peo.user.first_name}}</h1>
+            <h1>🥇</h1>
+            
+           {% endfor%}
+        </div>
+        
+    
+
+{% endblock %}

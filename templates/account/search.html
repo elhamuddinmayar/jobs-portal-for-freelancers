@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}Announce Job{% endblock %}
+{% block content %}
+{% load static%}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Zubairy Jobs Portal</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0  ">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{% url "home" %}" {% if section == "home" %}class="selected"{% endif %}><i class="fas fa-home"></i> Home<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link  active" href="{% url "jobs" %}"><i class="fas fa-dollar-sign"></i> Jobs<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fas fa-user-plus"></i> Users<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fas fa-business-time"></i> Companies<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fas fa-address-card"></i> About<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url "show_profile" request.user.id %}"> <i class="fas fa-user-edit"></i> Profile<br></a>
+          </li>
+        </ul>
+        
+  
+    </div>
+  </nav>
+
+
+
+  {% if users_find%}
+        {% for user in users_find %}
+
+           
+           <div class="row mt-3">
+            <div class="col-md-10 offset-md-1">
+                <div class="list-group">
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col px-4">
+                                <div>
+                                    <div class="float-right">
+                                    <h3>Search relates {{query}}</h3>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-auto">
+                              {% if profile.profile_photo %}
+                              <img src="{{ profile.profile_photo.url }}" alt="Profile Photo" width="150" height="150">
+                            {% else %}
+                              <img src="{% static 'images/4.jpg' %}" alt="Default Avatar" width="150" height="150">
+                            {% endif %}
+                            
+                            </div>
+                            <div class="col px-4">
+                                <div>
+                                    <div class="float-right">{{user.date_joined}}</div>
+                                    <h3><a class="" href="{% url "show_profile" user.id %}">{{user.username}}</a></h3>
+                                    <p class="mb-0">{{profile.bio}} | {{user.email}} | {{profile.address}},{{profile.personal_skills}}.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+  {% elif jobs_find%}
+  {% for job in jobs_find %}
+
+      <div class="card border-light mb-3 " style="max-width: 18rem;">
+        <div class="card-header bg-black text-info ">{{job.company}}</div>
+        <div class="card-body bg-dark  bg-opacity-60">
+          <h5 class="card-title"><span class="text-info"> {{job.title}}</span></h5>
+          <p class="card-text"><span class="text-light">Aggreement Duration:</span> <span class="text-info">{{job.agreement_duration}}</span></p>
+          <p class="card-text"><span class="text-light">Location:</span> <span class="text-info">{{job.location}}</p>
+            
+              <div class="d-flex justify-content-between ">
+                <a class="  btn btn-success px-3 rounded-1"  href="{% url "apply_job" job.id %}" >Apply</a>
+                <a class="btn btn-info px-3 rounded-1" href="{% url "job_details" job.id %} "> detail</a></div>
+          </div>
+        <div class="card-footer bg-secondary">
+          <small class="text-muted"><span class="text-dark">Announced at:</span> <span class="text-dark">{{job.announced_at}}</span></small>
+        </div>
+      </div>
+{%endfor%}
+  {%else%}
+
+  <h1> No results found ! </h1>
+  {% endif%}
+
+{% endblock %}

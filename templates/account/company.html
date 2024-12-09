@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% load static%}
+{% block title %}Company{% endblock %}
+{% block content %}
+
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Zubairy Jobs Portal</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+       <div class="collapse navbar-collapse" id="navbarSupportedContent"> 
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0  ">
+          <li class="nav-item">
+            <a class="nav-link " aria-current="page" href="{% url "home" %}" {% if section == "home" %}class="selected"{% endif %}><i class="fas fa-home"></i> Home<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{% url "jobs" %}"><i class="fas fa-dollar-sign"></i> Jobs<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url "all_user" %}"><i class="fas fa-user-plus"></i> Users<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fas fa-business-time"></i> Companies<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fas fa-address-card"></i> About<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{% url "show_profile" request.user.id %}"><i class="fas fa-user-edit"></i> Profile<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url "show_company" request.user.id %}"><i class="fas fa-business-time"></i> My Company<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url "suggestions" request.user.company.id %}"><i class="fas fa-business-time"></i> Suggestions<br></a>
+          </li>
+          <li class="nav-item dropdown ">
+                <a class="nav-link dropdown-toggle active"  href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Settings</a>
+                <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{% url "announce_job"%}"><i class="fas fa-briefcase"></i> Announce Job <br></a></li>
+        
+                <li><a class="dropdown-item" href="{% url "edit_company" %}"> <i class="fas fa-building"></i> Update Company<br>  </a></li>
+                <li><a class="dropdown-item" href="{% url "logout" %}"><i class="fas fa-power-off"></i> Logg out<br></a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#"><i class="fas fa-sticky-note"></i> Something else<br> </a></li>
+                </ul>
+             </li>
+        </ul>
+        
+        <div class="text-white">
+          {% if request.user.is_authenticated %}
+                Welcome  {{ request.user.first_name|default:request.user.username }} 
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </nav>
+{% if request.user.is_authenticated%}
+    {% comment %} {% if request.user.company.user %} {% endcomment %}
+    
+            <div class="div1">
+                {% if company.profile_photo %}
+                    <img src="{{company.profile_photo.url}}" height="220px">
+                {% else %}
+                    <img src= {% static "profile_photo/pic6.png" %} height="220px">
+                {% endif %}
+
+                {% if company.background_photo %}
+                    <img src="{{company.background_photo.url}}" height="220px">
+                {% else %}
+                    <img src= {% static "profile_photo/pic6.png" %} height="220px">
+                {% endif %}
+                <h1 >Manager:{{request.user.first_name}} {{request.user.last_name}}</h1>
+                <h1>Company:{{company.name}}</h1>
+                <p >{{company.name}} </p>
+                <p >{{company.location}} </p>
+                <p >{{company.activity_scope}} </p>
+                <p >{{company.phone_number}} </p>
+                <p >{{company.email}} </p>
+                <p >{{company.location}} </p>
+                <p >{{company.website}} </p>
+                
+            </div>
+
+            
+              
+             
+              
+           
+            <body>
+              <!-- Background Image -->
+              {% if company.background_photo %}
+              <img class="background" src="{{company.background_photo.url}}" height="220px">
+          {% else %}
+              <img class="background" src= {% static "profile_photo/pic6.png" %} height="220px">
+          {% endif %}
+              <!-- Content -->
+              <div class="container vh-100 d-flex justify-content-center align-items-center">
+                <div class="overlay text-center text-white">
+                  {% if company.profile_photo %}
+                    <img src="{{company.profile_photo.url}}" height="220px">
+                {% else %}
+                    <img class="profile-photo mb-3" src= {% static "profile_photo/pic6.png" %} height="220px">
+                {% endif %}
+                  <h1 class="mb-3">Your Company Name</h1>
+                  <p><strong>Address:</strong> 1234 Business Avenue, City, Country</p>
+                  <p><strong>Email:</strong> info@yourcompany.com</p>
+                  <p><strong>Phone:</strong> +123 456 7890</p>
+                  <p><strong>Activity Scope:</strong> Technology Solutions, IT Consulting, Software Development</p>
+                </div>
+              </div>
+            
+              <!-- Bootstrap JS -->
+              
+            </body>
+            </html>
+            
+
+
+            {% comment %} related jobs  {% endcomment %}
+            <h1>Related Jobs</h1>
+            {% for job in relate_jobs %}
+
+              <a class="" href="{% url "job_details" job.id%}">{{job.title}}</a>
+                
+
+            {% endfor%}
+{% endif %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        {% for message in messages %}
+            alert("{{ message|escapejs }}");
+        {% endfor %}
+    });
+</script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+{% endblock %}

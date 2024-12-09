@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Announce Job{% endblock %}
+{% block content %}
+
+
+
+<div class="container mb-5" style="margin-top:40px">
+    <div class="row">
+        <div class="col-10   mx-auto text-center  " style="margin-top: 10px">
+            <h1>Apply for job</h1>
+            <p>fill the following form for job </p>
+            {% for error in user_form.errors %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <p class="text-danger">Please fix the issue with your <strong>{{error}}</strong></p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+            <form method="post"  enctype="multipart/form-data">
+               
+                {% comment %} <div class="form-floating my-3  ">
+                    <input type="text" value={{request.user.company}} name="suggested_user" maxlength="250"  id="id_name"  class="form-control log-name border-success">
+                    <label for="id_name">Name</label>
+                </div> {% endcomment %}
+
+                <div class="form-floating my-3  ">
+                    <input type="text" value={{job.title}} name="job" accept="image/*" id="id_job" class="form-control log-name border-success" >
+                    <label for="id_job">Job</label> 
+                </div>
+
+                <div class="form-floating my-3  ">
+                    <input type="number" value={{request.user.profile.phone_number}} name="phone_number" accept="image/*"  class="form-control log-name border-success">
+                    <label for="id_phone_number">Phone Number</label>
+                </div>
+
+                
+               
+                <div class="form-floating ">
+                    <input type="text"  name="address" maxlength="255" id="id_address" class="form-control log-pass border-success mt-3 ">
+                    <label for="id_address">Address</label>
+                </div>
+                <div class="form-floating ">
+                    <input type="text" value={{request.user.profile.interests}} name="interests" maxlength="250"  id="id_interests"  class="form-control log-pass border-success mt-3 ">
+                    <label for="id_interests">Interests</label>
+                </div>
+                <div class="form-floating ">
+                    <input type="text" {% if request.user.profile.languages%} value={{request.user.profile.languages}} {% endif %} value="Null" name="languages" maxlength="250"  id="id_languages" class="form-control log-pass border-success mt-3 ">
+                    <label for="id_languages">languages</label>
+                </div>
+                <div class="form-floating ">
+                    <input type="text" value={{request.user.profile.work_experience}} name="work_experience" maxlength="250" id="id_website" class="form-control log-pass border-success mt-3">
+                    <label for="id_website">Work experience</label>
+                </div>
+                <div class="form-floating ">
+                    <input type="text" value={{request.user.profile.education_background}} name="education_background" maxlength="250" id="id_website" class="form-control log-pass border-success mt-3">
+                    <label for="id_website">Education Background</label>
+                </div>
+                <div class="form-floating ">
+                    <input type="text" value={{request.user.profile.personal_skills}} name="personal_skills" maxlength="250" id="id_website" class="form-control log-pass border-success mt-3">
+                    <label for="id_website">Personal Skills</label>
+                </div>
+
+               
+                {% csrf_token %}
+                <input class="btn btn-success login-new mt-4" type="submit" value="Save Changes">
+                {% comment %} <a class="text-decoration-none btn btn-danger mt-4" href="{% url "show_profile" request.user.id %}">Back to Profile</a> {% endcomment %}
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+{% endblock %}

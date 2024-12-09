@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Announce Job{% endblock %}
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Zubairy Jobs Portal</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0  ">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{% url "home" %}" {% if section == "home" %}class="selected"{% endif %}><i class="fas fa-home"></i> Home<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link  active" href="{% url "jobs" %}"><i class="fas fa-dollar-sign"></i> Jobs<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url "all_user" %}"><i class="fas fa-user-plus"></i> Users<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fas fa-business-time"></i> Companies<br></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fas fa-address-card"></i> About<br></a>
+          </li>
+          <li>
+            {% if request.user.company.user%}
+            <li class="nav-item">
+              <a class="nav-link " href="{% url "show_company" request.user.id %}"><i class="fas fa-address-card"></i> My Company<br></a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url "register_company" %} "><i class="fas fa-address-card"></i> Register Company<br></a>
+            </li>
+            {% endif  %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url "show_profile" request.user.id %}"> <i class="fas fa-user-edit"></i> Profile<br></a>
+          </li>
+        </ul>
+        
+      
+        <form class="d-flex mt-2" method="GET" action="{% url "search_jobs" %}"  >
+          <input class="form-control me-2" name="q" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid d-flex justify-content-start  flex-wrap gap-5 p-5">
+
+  
+{% for job in posts %}
+  
+      <div class="card border-light mb-3 " style="max-width: 18rem;">
+        <div class="card-header bg-black text-info ">{{job.company}}</div>
+        <div class="card-body bg-dark  bg-opacity-60">
+          <h5 class="card-title"><span class="text-info"> {{job.title}}</span></h5>
+          <p class="card-text"><span class="text-light">Aggreement Duration:</span> <span class="text-info">{{job.agreement_duration}}</span></p>
+          <p class="card-text"><span class="text-light">Location:</span> <span class="text-info">{{job.location}}</p>
+            
+              <div class="d-flex justify-content-between ">
+                <a class="  btn btn-success px-3 rounded-1"  href="{% url "apply_job" job.id %}" >Apply</a>
+                <a class="btn btn-info px-3 rounded-1" href="{% url "job_details" job.id %} "> detail</a></div>
+          </div>
+        <div class="card-footer bg-secondary">
+          <small class="text-muted"><span class="text-dark">Announced at:</span> <span class="text-dark">{{job.announced_at}}</span></small>
+        </div>
+      </div>
+{% endfor %}
+</div>
+
+
+
+{% include "pagination.html" with page=posts %}
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Register Company{% endblock title %}
+{% block content %}
+
+
+{% if request.user.is_authenticated %}
+<div class="container mb-5" style="margin-top:40px">
+    <div class="row">
+        <div class="col-10   mx-auto text-center  " style="margin-top: 10px">
+            <h1>Update Info</h1>
+           
+            {% for error in user_form.errors %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <p class="text-danger">Please fix the issue with your <strong>{{error}}</strong></p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        
+            <p>Fill out the existing form to register</p>
+            <form action="" method="post" enctype="multipart/form-data">
+                
+                
+                <div class="form-floating my-3">
+                    <input min="5" required name="name" type="text"  placeholder="name" class="form-control log-name border-success">
+                    <label for="floatingInput">company name</label>
+                </div>
+                    <div class="form-floating my-3">
+                    <input type="file" name="profile_photo" accept="image/*" id="profile_photo" class="form-control log-name border-success">
+                    <label for="profile_photo">Profile photo:</label>
+                </div>
+                    <div class="form-floating my-3">
+                    <input type="file" name="background_photo" accept="image/*" id="background_photo" class="form-control log-name border-success">
+                    <label for="background_photo">Background_photo:</label>
+                </div>
+                    <div class="form-floating my-3">
+                    <input min="8" required name="location" type="text"  placeholder="location" class="form-control log-name border-success" >
+                    <label for="floatingInput">location</label>
+                </div>
+                    <div class="form-floating my-3">
+                    <input min="8" required name="activity_scope" type="text"  placeholder="activity scope" class="form-control log-name border-success">
+                    <label for="floatingInput">activity scope</label>
+                </div>
+                    <div class="form-floating my-3">
+                    <input min="11" required name="email" type="email"  placeholder="email" class="form-control log-name border-success">
+                    <label for="floatingInput">email</label>
+                </div>
+                    <div class="form-floating my-3">
+                    <input min="7" required name="phone_number" type="text"  placeholder="phone number" class="form-control log-name border-success">
+                    <label for="floatingInput">phone number</label>
+
+                    <div class="form-floating my-3">
+                    <input min="5" required name="website" type="text"  placeholder="website" required=False class="form-control log-name border-success">
+                    <label for="floatingInput">website</label>
+                </div>
+                    {% csrf_token %}
+                    <input class="btn btn-success login-new mt-4" type="submit" value="Save Changes">
+                    <a class="text-decoration-none btn btn-danger mt-4" href="{% url "show_profile" request.user.id %}">Back to Home</a>
+            </form>
+   
+        </div>
+    </div> 
+    
+
+{% else %}
+    <p class="">
+        To register your company <a href="{% url "login" %}"> Create an account</a>
+        first.
+    </p>
+   
+{% endif %}
+
+
+              
+{% endblock content %}
+
+        
+        
+   
+

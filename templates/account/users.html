@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Announce Job{% endblock %}
+{% block content %}
+{% load static%}
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Zubairy Jobs Portal</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0  ">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="{% url "home" %}" {% if section == "home" %}class="selected"{% endif %}><i class="fas fa-home"></i> Home<br></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{% url "jobs" %}"><i class="fas fa-dollar-sign"></i> Jobs<br></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url "all_user" %}"><i class="fas fa-user-plus"></i> Users<br></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="fas fa-business-time"></i> Companies<br></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="fas fa-address-card"></i> About<br></a>
+        </li>
+        <li>
+          {% if request.user.company.user%}
+          <li class="nav-item">
+            <a class="nav-link  " href="{% url "show_company" request.user.id %}"><i class="fas fa-address-card"></i> My Company<br></a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link  " href="{% url "register_company" %} "><i class="fas fa-address-card"></i> Register Company<br></a>
+          </li>
+          {% endif  %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url "show_profile" request.user.id %}"> <i class="fas fa-user-edit"></i> Profile<br></a>
+        </li>
+      </ul>
+      <form class="d-flex mt-2" method="GET" action="{% url "search_user" %}"  >
+        <input class="form-control me-2" name="q" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+
+
+    
+  </div>
+</nav>
+
+
+
+ 
+
+ 
+      
+      <div class="container-fluid d-flex justify-content-start  flex-wrap gap-5  ">
+          {% for user in posts%}
+          
+          <div class="card card-primary card-outline col-3 m-1  ">
+            <div class="card-body box-profile">
+              <div class="text-center">
+                {% if user.profile_photo %}
+                    <img src="{{user.profile_photo.url}}" style="width:160px; height:160px; object-fit:cover;  border:2px solid green; border-radius:50%; padding:2px;">
+                {% else %}
+                <img 
+                src={% static 'images/4.jpg' %}
+                alt="User profile picture" style="width:160px; height:160px; object-fit:cover; border:2px solid green; border-radius:50%;  ">
+                {% endif %}
+                
+              </div>
+
+              <h3 class="profile-username text-center mt-2" style="font-size:1.5rem; ">{{user.user.first_name}} {{user.user.last_name}}</h3>
+
+              <p class="text-muted text-center">Software Engineer</p>
+              <div class="d-flex justify-content-between mt-1">
+                <a  href="# " class="btn btn-info fas fa-comments pb-1"></a>
+                <a href="{% url "show_profile" user.id %}"  class="  btn btn-success ">View Profile</a>
+               </div>
+            </div>
+        </div>
+
+           
+            
+                {% endfor%}
+                
+
+{% include "pagination.html" with page=posts %}
+{% endblock %}

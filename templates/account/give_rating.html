@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Rate{% endblock %}
+{% block content %}
+
+    
+    <form method="post">  
+      {% csrf_token %}
+    <p>
+      <label for="id_rating_value">Rating value:</label>
+      <select name="rating_value" required="" id="id_rating_value">
+    <option value="" selected="">---------</option>
+  
+    <option value="1">1 Star</option>
+    <option value="2">2 Stars</option>
+    <option value="3">3 Stars</option>
+    <option value="4">4 Stars</option>
+    <option value="5">5 Stars</option>
+  </select>
+      
+      
+    </p>
+      <label for="id_comment">Comment:</label>
+      <textarea name="comment" cols="40" rows="10" id="id_comment"></textarea>
+    </p>
+      <button type="submit">Submit Rating</button>
+    </form>
+{% endblock %}
